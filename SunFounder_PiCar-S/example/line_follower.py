@@ -147,6 +147,10 @@ def cali():
 	print("Middle references =", references)
 	time.sleep(1)
 
+def stop():
+	bw.stop()
+	fw.turn(90)
+
 def destroy():
 	bw.stop()
 	fw.turn(90)
