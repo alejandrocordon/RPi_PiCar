@@ -1,5 +1,6 @@
 import sys
 import os
+
 import dbus, dbus.mainloop.glib
 from gi.repository import GObject
 from example_advertisement import Advertisement
