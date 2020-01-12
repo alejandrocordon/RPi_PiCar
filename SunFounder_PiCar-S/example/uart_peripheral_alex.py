@@ -71,7 +71,7 @@ class RxCharacteristic(Characteristic):
             print("Realizando un Test")
             #line_follower.setup()
             #line_follower.setup()
-            line_follower.cali()
+            line_follower.start()
             #os.system('picar servo-install')
         if bytearray(value).decode() == 'Line':
             print("Siguiendo la linea")
@@ -79,7 +79,7 @@ class RxCharacteristic(Characteristic):
             #os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/line_follower.py')
         if bytearray(value).decode() == 'Light':
             print("Siguiendo la luz")
-            line_follower.destroy()
+            line_follower.stop()
             os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_follower.py')
         if bytearray(value).decode() == 'LightUltra':
             print("Siguiendo la luz")

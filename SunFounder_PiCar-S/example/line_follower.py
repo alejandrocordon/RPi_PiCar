@@ -25,6 +25,7 @@ calibrate = False
 forward_speed = 80
 backward_speed = 70
 turning_angle = 40
+dooms_day = False
 
 max_off_track_count = 40
 
@@ -59,7 +60,7 @@ def main():
 	c_step = 30
 	d_step = 45
 	bw.forward()
-	while True:
+	while not dooms_day:
 		lt_status_now = lf.read_digital()
 		#print(lt_status_now)
 		# Angle calculate
@@ -147,7 +148,12 @@ def cali():
 	print("Middle references =", references)
 	time.sleep(1)
 
+def start():
+	dooms_day = False
+	main()
+
 def stop():
+	dooms_day = True
 	bw.stop()
 	fw.turn(90)
 
