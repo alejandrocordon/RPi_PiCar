@@ -65,16 +65,16 @@ class RxCharacteristic(Characteristic):
             os.system('picar servo-install')
         if bytearray(value).decode() == 'Line':
             print("Siguiendo la linea")
-            os.system('/home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/python line_follower.py')
+            os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/line_follower.py')
         if bytearray(value).decode() == 'Light':
             print("Siguiendo la luz")
-            os.system('/home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/python light_follower.py')
+            os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_follower.py')
         if bytearray(value).decode() == 'LightUltra':
             print("Siguiendo la luz")
-            os.system('/home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/python light_with_obsavoidance.py')
+            os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_with_obsavoidance.py')
         if bytearray(value).decode() == 'Ultra':
             print("Esquivando objetos")
-            os.system('/home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/python ultra_sonic_avoid.py')
+            os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/ultra_sonic_avoid.py')
         if bytearray(value).decode() == 'Stop':
             print("Realizando un Test")
             os.system('picar servo-install')
