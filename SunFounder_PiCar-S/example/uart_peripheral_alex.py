@@ -1,12 +1,18 @@
-import sys
 import os
+import sys
 
-import dbus, dbus.mainloop.glib
-from gi.repository import GObject
+import dbus
+import dbus.mainloop.glib
 from example_advertisement import Advertisement
 from example_advertisement import register_ad_cb, register_ad_error_cb
 from example_gatt_server import Service, Characteristic
 from example_gatt_server import register_app_cb, register_app_error_cb
+from gi.repository import GObject
+
+import line_follower
+
+
+
 
 BLUEZ_SERVICE_NAME = 'org.bluez'
 DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
@@ -63,7 +69,9 @@ class RxCharacteristic(Characteristic):
         print('remote: {}'.format(bytearray(value).decode()))
         if bytearray(value).decode() == 'Test':
             print("Realizando un Test")
-            os.system('picar servo-install')
+            line_follower.setup()
+            line_follower.main()
+            #os.system('picar servo-install')
         if bytearray(value).decode() == 'Line':
             print("Siguiendo la linea")
             os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/line_follower.py')
