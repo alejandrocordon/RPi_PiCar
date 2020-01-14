@@ -121,10 +121,10 @@ class RxCharacteristic(Characteristic):
             os.system('picar servo-install')
         if bytearray(value).decode() == 'l':
             print("left")
-            fw.turn(110)
+            fw.turn(int(90+turning_angle))
         if bytearray(value).decode() == 'r':
             print("right")
-            fw.turn(70)
+            fw.turn(int(90-turning_angle))
         if bytearray(value).decode() == 'bw':
             print("back wheels")
             bw.speed = 40
