@@ -1,5 +1,7 @@
 import os
 import sys
+import threading
+from datetime import date
 
 import dbus
 import dbus.mainloop.glib
@@ -11,8 +13,11 @@ from gi.repository import GObject
 
 import line_follower
 
-
-
+from SunFounder_Line_Follower import Line_Follower
+from picar import front_wheels
+from picar import back_wheels
+import time
+import picar
 
 BLUEZ_SERVICE_NAME = 'org.bluez'
 DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
@@ -24,6 +29,29 @@ UART_RX_CHARACTERISTIC_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e'
 UART_TX_CHARACTERISTIC_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e'
 LOCAL_NAME = 'RaspberryPi3_UART'
 mainloop = None
+
+picar.setup()
+
+REFERENCES = [200, 200, 200, 200, 200]
+# calibrate = True
+calibrate = False
+forward_speed = 80
+backward_speed = 70
+turning_angle = 40
+dooms_day = False
+
+max_off_track_count = 40
+
+delay = 0.0005
+
+fw = front_wheels.Front_Wheels(db='config')
+bw = back_wheels.Back_Wheels(db='config')
+lf = Line_Follower.Line_Follower()
+
+lf.references = REFERENCES
+fw.ready()
+bw.ready()
+fw.turning_max = 45
 
 
 class TxCharacteristic(Characteristic):
@@ -69,14 +97,14 @@ class RxCharacteristic(Characteristic):
         print('remote: {}'.format(bytearray(value).decode()))
         if bytearray(value).decode() == 'Test':
             print("Realizando un Test")
-            #line_follower.setup()
-            #line_follower.setup()
+            # line_follower.setup()
+            # line_follower.setup()
             line_follower.start()
-            #os.system('picar servo-install')
+            # os.system('picar servo-install')
         if bytearray(value).decode() == 'Line':
             print("Siguiendo la linea")
             line_follower.main()
-            #os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/line_follower.py')
+            # os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/line_follower.py')
         if bytearray(value).decode() == 'Light':
             print("Siguiendo la luz")
             line_follower.stop()
@@ -86,11 +114,40 @@ class RxCharacteristic(Characteristic):
             os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_with_obsavoidance.py')
         if bytearray(value).decode() == 'Ultra':
             print("Esquivando objetos")
-            #os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/ultra_sonic_avoid.py')
+            # os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/ultra_sonic_avoid.py')
             line_follower.stop()
         if bytearray(value).decode() == 'Stop':
             print("Realizando un Test")
             os.system('picar servo-install')
+        if bytearray(value).decode() == 'l':
+            print("left")
+            os.system('picar servo-install')
+        if bytearray(value).decode() == 'r':
+            print("right")
+            os.system('picar servo-install')
+        if bytearray(value).decode() == 'bw':
+            print("backward")
+            os.system('picar servo-install')
+        if bytearray(value).decode() == 'fw':
+            print("forward")
+            os.system('picar servo-install')
+        if bytearray(value).decode() == 'fast':
+            print("left")
+            os.system('picar servo-install')
+        if bytearray(value).decode() == 'slow':
+            print("right")
+            os.system('picar servo-install')
+        if bytearray(value).decode() == 'stop':
+            print("stop")
+            line_follower.b
+        if bytearray(value).decode() == 'straight':
+            print("forward")
+            os.system('picar servo-install')
+        if bytearray(value).decode() == 'init':
+            print("forward")
+            os.system('picar servo-install')
+            picar
+
 
 class UartService(Service):
     def __init__(self, bus, index):
@@ -148,6 +205,28 @@ def find_adapter(bus):
     return None
 
 
+# -------------------------------------
+# PICAR
+# -------------------------------------
+
+def straight_run():
+    while True:
+        bw.speed = 70
+        bw.forward()
+        fw.turn_straight()
+
+
+def setup():
+    if calibrate:
+        cali()
+
+
+
+
+
+
+
+
 def main():
     global mainloop
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
@@ -174,8 +253,16 @@ def main():
     ad_manager.RegisterAdvertisement(adv.get_path(), {},
                                      reply_handler=register_ad_cb,
                                      error_handler=register_ad_error_cb)
+
+    # -------------------------------------
+    # PICAR
+    # -------------------------------------
+
+
+
     try:
         mainloop.run()
+        print("asdfasdfasd")
     except KeyboardInterrupt:
         adv.Release()
 
