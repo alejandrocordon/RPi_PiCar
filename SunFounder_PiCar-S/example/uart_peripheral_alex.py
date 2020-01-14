@@ -144,9 +144,9 @@ class RxCharacteristic(Characteristic):
             print("stop")
             bw.speed = 0
             bw.forward()
-        if bytearray(value).decode() == 'straight':
-            print("forward")
-            os.system('picar servo-install')
+        if bytearray(value).decode() == 's':
+            print("straight")
+            fw.turn(int(90))
         if bytearray(value).decode() == 'init':
             print("forward")
             os.system('picar servo-install')
