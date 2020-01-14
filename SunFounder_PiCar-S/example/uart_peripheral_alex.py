@@ -121,32 +121,35 @@ class RxCharacteristic(Characteristic):
             os.system('picar servo-install')
         if bytearray(value).decode() == 'l':
             print("left")
-            os.system('picar servo-install')
+            fw.turn(110)
         if bytearray(value).decode() == 'r':
             print("right")
-            os.system('picar servo-install')
+            fw.turn(70)
         if bytearray(value).decode() == 'bw':
-            print("backward")
-            os.system('picar servo-install')
+            print("back wheels")
+            bw.speed = 40
+            bw.forward()
         if bytearray(value).decode() == 'fw':
             print("forward")
             os.system('picar servo-install')
         if bytearray(value).decode() == 'fast':
             print("left")
-            os.system('picar servo-install')
+            bw.speed = 90
+            bw.forward()
         if bytearray(value).decode() == 'slow':
             print("right")
-            os.system('picar servo-install')
+            bw.speed = 10
+            bw.forward()
         if bytearray(value).decode() == 'stop':
             print("stop")
-            line_follower.b
+            bw.speed = 0
+            bw.forward()
         if bytearray(value).decode() == 'straight':
             print("forward")
             os.system('picar servo-install')
         if bytearray(value).decode() == 'init':
             print("forward")
             os.system('picar servo-install')
-            picar
 
 
 class UartService(Service):
