@@ -68,7 +68,7 @@ topic = 'masteriot'
 
 # Connect
 mqttc.username_pw_set('ibnyofaw', 'UDbgKs77-wUN')
-mqttc.connect('mqtt://hairdresser.cloudmqtt.com', '18849')
+mqttc.connect('hairdresser.cloudmqtt.com', '18849')
 
 # Start subscribe, with QoS level 0
 mqttc.subscribe(topic, 0)
