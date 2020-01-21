@@ -132,9 +132,10 @@ class RxCharacteristic(Characteristic):
                                 ['write'], service)
 
     def WriteValue(self, value, options):
-        print('remote: {}'.format(bytearray(value).decode()))
+        comando = 'remote: {}'.format(bytearray(value).decode());
+        print(comando)
         distance = UA.get_distance()
-        print("command: {}".format(bytearray(value).decode()) + " distance: " + distance + " ")
+        print("command: " + comando + " distance: " + distance + " ")
 
         topic = 'masteriot'
 
