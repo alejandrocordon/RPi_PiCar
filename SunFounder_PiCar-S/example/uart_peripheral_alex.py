@@ -20,9 +20,7 @@ from picar import back_wheels
 import time
 import picar
 
-
 import paho.mqtt.client as mqtt
-
 
 # BLE init
 BLUEZ_SERVICE_NAME = 'org.bluez'
@@ -35,7 +33,6 @@ UART_RX_CHARACTERISTIC_UUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e'
 UART_TX_CHARACTERISTIC_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e'
 LOCAL_NAME = 'RaspberryPi3_UART'
 mainloop = None
-
 
 # PICAR init
 picar.setup()
@@ -78,6 +75,7 @@ def on_message(client, obj, msg):
 def on_publish(client, obj, mid):
     print("mid: " + str(mid))
 
+
 def on_subscribe(client, obj, mid, granted_qos):
     print("Subscribed: " + str(mid) + " " + str(granted_qos))
 
@@ -92,7 +90,6 @@ mqttc.on_message = on_message
 mqttc.on_connect = on_connect
 mqttc.on_publish = on_publish
 mqttc.on_subscribe = on_subscribe
-
 
 
 class TxCharacteristic(Characteristic):
@@ -137,7 +134,7 @@ class RxCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         print('remote: {}'.format(bytearray(value).decode()))
         distance = UA.get_distance()
-        print('distance', distance, 'cm')
+        print("command: " + bytearray(value).decode() + " distance: " + distance + " ")
 
         topic = 'masteriot'
 
@@ -149,8 +146,7 @@ class RxCharacteristic(Characteristic):
         mqttc.subscribe(topic, 0)
 
         # Publish a message
-        mqttc.publish(topic, "command: "+ bytearray(value).decode() +" distance: "+distance+" ")
-
+        mqttc.publish(topic, "command: " + bytearray(value).decode() + " distance: " + distance + " ")
 
         if bytearray(value).decode() == 'Test':
             print("Realizando un Test")
@@ -174,10 +170,10 @@ class RxCharacteristic(Characteristic):
             os.system('picar servo-install')
         if bytearray(value).decode() == 'l':
             print("left")
-            fw.turn(int(90-turning_angle))
+            fw.turn(int(90 - turning_angle))
         if bytearray(value).decode() == 'r':
             print("right")
-            fw.turn(int(90+turning_angle))
+            fw.turn(int(90 + turning_angle))
         if bytearray(value).decode() == 'bw':
             print("back wheels")
             bw.speed = 40
@@ -307,8 +303,6 @@ def main():
     # -------------------------------------
     # PICAR
     # -------------------------------------
-
-
 
     try:
         mainloop.run()
