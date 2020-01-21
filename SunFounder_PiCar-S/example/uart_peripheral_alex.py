@@ -60,7 +60,6 @@ fw.turning_max = 45
 
 # Picar Ultrasonic init
 UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
-distance = UA.get_distance()
 
 
 class TxCharacteristic(Characteristic):
@@ -104,6 +103,7 @@ class RxCharacteristic(Characteristic):
 
     def WriteValue(self, value, options):
         print('remote: {}'.format(bytearray(value).decode()))
+        distance = UA.get_distance()
         print('distance', distance, 'cm')
         if bytearray(value).decode() == 'Test':
             print("Realizando un Test")
