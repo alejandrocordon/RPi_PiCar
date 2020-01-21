@@ -61,7 +61,6 @@ fw.turning_max = 45
 # Picar Ultrasonic init
 UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
 distance = UA.get_distance()
-status = UA.less_than(threshold)
 
 
 class TxCharacteristic(Characteristic):
