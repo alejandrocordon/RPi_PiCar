@@ -149,7 +149,7 @@ class RxCharacteristic(Characteristic):
         mqttc.subscribe(topic, 0)
 
         # Publish a message
-        mqttc.publish(topic, "my asdf message")
+        mqttc.publish(topic, "command: "+ bytearray(value).decode() +" distance: "+distance+" ")
 
 
         if bytearray(value).decode() == 'Test':
