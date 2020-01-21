@@ -21,6 +21,9 @@ import time
 import picar
 
 
+import paho.mqtt.client as mqtt
+
+
 # BLE init
 BLUEZ_SERVICE_NAME = 'org.bluez'
 DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
@@ -60,6 +63,36 @@ fw.turning_max = 45
 
 # Picar Ultrasonic init
 UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
+
+
+# MQTT
+# Define event callbacks
+def on_connect(client, userdata, flags, rc):
+    print("rc: " + str(rc))
+
+
+def on_message(client, obj, msg):
+    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+
+
+def on_publish(client, obj, mid):
+    print("mid: " + str(mid))
+
+def on_subscribe(client, obj, mid, granted_qos):
+    print("Subscribed: " + str(mid) + " " + str(granted_qos))
+
+
+def on_log(client, obj, level, string):
+    print(string)
+
+
+mqttc = mqtt.Client()
+# Assign event callbacks
+mqttc.on_message = on_message
+mqttc.on_connect = on_connect
+mqttc.on_publish = on_publish
+mqttc.on_subscribe = on_subscribe
+
 
 
 class TxCharacteristic(Characteristic):
@@ -105,6 +138,20 @@ class RxCharacteristic(Characteristic):
         print('remote: {}'.format(bytearray(value).decode()))
         distance = UA.get_distance()
         print('distance', distance, 'cm')
+
+        topic = 'masteriot'
+
+        # Connect
+        mqttc.username_pw_set('ibnyofaw', 'UDbgKs77-wUN')
+        mqttc.connect('hairdresser.cloudmqtt.com', '18849')
+
+        # Start subscribe, with QoS level 0
+        mqttc.subscribe(topic, 0)
+
+        # Publish a message
+        mqttc.publish(topic, "my asdf message")
+
+
         if bytearray(value).decode() == 'Test':
             print("Realizando un Test")
             line_follower.start()
