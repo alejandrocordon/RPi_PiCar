@@ -307,8 +307,6 @@ def main():
     ad_manager.RegisterAdvertisement(adv.get_path(), {},
                                      reply_handler=register_ad_cb,
                                      error_handler=register_ad_error_cb)
-    rc = mqttc.loop()
-    print("rc: " + str(rc))
 
     # -------------------------------------
     # PICAR
@@ -316,6 +314,9 @@ def main():
 
     try:
         mainloop.run()
+        while rc == 0:
+            rc = mqttc.loop()
+        print("rc: " + str(rc))
 
     except KeyboardInterrupt:
         adv.Release()
