@@ -25,7 +25,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-import paho.mqtt.client as mqtt
+import paho.mqtt.client as mqttc
 import os, urlparse
 
 
@@ -64,6 +64,7 @@ mqttc.on_subscribe = on_subscribe
 url_str = os.environ.get('CLOUDMQTT_URL', 'mqtt://hairdresser.cloudmqtt.com:18849')
 url = urlparse.urlparse(url_str)
 topic = url.path[1:] or 'test'
+topic = 'masteriot'
 
 # Connect
 mqttc.username_pw_set('ibnyofaw', 'UDbgKs77-wUN')
