@@ -136,20 +136,24 @@ class RxCharacteristic(Characteristic):
         print(comando)
         distance = UA.get_distance()
         distancia = str(distance)
-
         print("command: " + comando + " distance: " + distancia + " ")
 
         topic = 'masteriot'
+        try:
+            # Connect
+            mqttc.username_pw_set('ibnyofaw', 'UDbgKs77-wUN')
+            mqttc.connect('hairdresser.cloudmqtt.com', '18849')
 
-        # Connect
-        mqttc.username_pw_set('ibnyofaw', 'UDbgKs77-wUN')
-        mqttc.connect('hairdresser.cloudmqtt.com', '18849')
+            # Start subscribe, with QoS level 0
+            mqttc.subscribe(topic, 0)
 
-        # Start subscribe, with QoS level 0
-        mqttc.subscribe(topic, 0)
+            # Publish a message
+            mqttc.publish(topic, "command: " + comando + " distance: " + distancia + " ")
 
-        # Publish a message
-        mqttc.publish(topic, "command: {}".format(bytearray(value).decode()) + " distance: " + distance + " ")
+        except KeyboardInterrupt:
+            print("error on MQTT")
+
+
 
         if bytearray(value).decode() == 'Test':
             print("Realizando un Test")
