@@ -22,6 +22,8 @@ import picar
 
 import paho.mqtt.client as mqtt
 
+from multiprocessing import mp
+
 # BLE init
 BLUEZ_SERVICE_NAME = 'org.bluez'
 DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
@@ -152,8 +154,6 @@ class RxCharacteristic(Characteristic):
 
         except KeyboardInterrupt:
             print("error on MQTT")
-
-
 
         if bytearray(value).decode() == 'Test':
             print("Realizando un Test")
@@ -295,11 +295,12 @@ def main():
     ad_manager = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, adapter),
                                 LE_ADVERTISING_MANAGER_IFACE)
 
+    mqtt_manager = dbus.Intergace(bus.get_object())
+
     app = UartApplication(bus)
     adv = UartAdvertisement(bus, 0)
 
     mainloop = GObject.MainLoop()
-
 
     service_manager.RegisterApplication(app.get_path(), {},
                                         reply_handler=register_app_cb,
@@ -314,13 +315,19 @@ def main():
 
     try:
         mainloop.run()
-        while rc == 0:
-            rc = mqttc.loop()
-        print("rc: " + str(rc))
-
     except KeyboardInterrupt:
         adv.Release()
 
 
+def mainMQTT():
+    rc = 0
+    while rc == 0:
+        rc = mqttc.loop()
+    print("rc: " + str(rc))
+
+
 if __name__ == '__main__':
+    ctx = mp.get_context('spawn')
+    p = ctx.Process(target=mainMQTT)
+    p.start()
     main()
