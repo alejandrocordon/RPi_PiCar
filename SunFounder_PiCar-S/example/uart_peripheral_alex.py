@@ -36,7 +36,8 @@ UART_TX_CHARACTERISTIC_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e'
 LOCAL_NAME = 'RaspberryPi3_UART'
 mainloop = None
 
-# PICAR init
+# PICAR
+print("INIT")
 picar.setup()
 
 REFERENCES = [200, 200, 200, 200, 200]
@@ -281,6 +282,7 @@ def setup():
 
 
 def main():
+    print('main')
     global mainloop
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
     bus = dbus.SystemBus()
@@ -317,7 +319,8 @@ def main():
         adv.Release()
 
 
-def mainMQTT():
+def mainMQTT(info):
+    print(info)
     rc = 0
     while rc == 0:
         rc = mqttc.loop()
@@ -325,7 +328,7 @@ def mainMQTT():
 
 
 if __name__ == '__main__':
-    p = Process(target=mainMQTT, args=('bob',))
+    p = Process(target=mainMQTT, args=('mainMQTT',))
     p.start()
     p.join()
     main()
