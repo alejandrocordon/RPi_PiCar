@@ -295,8 +295,6 @@ def main():
     ad_manager = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, adapter),
                                 LE_ADVERTISING_MANAGER_IFACE)
 
-    mqtt_manager = dbus.Intergace(bus.get_object())
-
     app = UartApplication(bus)
     adv = UartAdvertisement(bus, 0)
 
