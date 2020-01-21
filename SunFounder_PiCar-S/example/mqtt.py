@@ -25,8 +25,8 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-import paho.mqtt.client as mqttc
-import os, urlparse
+import paho.mqtt.client as mqtt
+#import os, urlparse
 
 
 # Define event callbacks
@@ -61,9 +61,9 @@ mqttc.on_subscribe = on_subscribe
 # mqttc.on_log = on_log
 
 # Parse CLOUDMQTT_URL (or fallback to localhost)
-url_str = os.environ.get('CLOUDMQTT_URL', 'mqtt://hairdresser.cloudmqtt.com:18849')
-url = urlparse.urlparse(url_str)
-topic = url.path[1:] or 'test'
+#url_str = os.environ.get('CLOUDMQTT_URL', 'mqtt://hairdresser.cloudmqtt.com:18849')
+#url = urlparse.urlparse(url_str)
+#topic = url.path[1:] or 'test'
 topic = 'masteriot'
 
 # Connect
