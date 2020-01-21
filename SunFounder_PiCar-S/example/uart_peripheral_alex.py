@@ -14,11 +14,14 @@ from gi.repository import GObject
 import line_follower
 
 from SunFounder_Line_Follower import Line_Follower
+from SunFounder_Ultrasonic_Avoidance import Ultrasonic_Avoidance
 from picar import front_wheels
 from picar import back_wheels
 import time
 import picar
 
+
+# BLE init
 BLUEZ_SERVICE_NAME = 'org.bluez'
 DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
 LE_ADVERTISING_MANAGER_IFACE = 'org.bluez.LEAdvertisingManager1'
@@ -30,6 +33,8 @@ UART_TX_CHARACTERISTIC_UUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e'
 LOCAL_NAME = 'RaspberryPi3_UART'
 mainloop = None
 
+
+# PICAR init
 picar.setup()
 
 REFERENCES = [200, 200, 200, 200, 200]
@@ -52,6 +57,11 @@ lf.references = REFERENCES
 fw.ready()
 bw.ready()
 fw.turning_max = 45
+
+# Picar Ultrasonic init
+UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
+distance = UA.get_distance()
+status = UA.less_than(threshold)
 
 
 class TxCharacteristic(Characteristic):
@@ -95,16 +105,13 @@ class RxCharacteristic(Characteristic):
 
     def WriteValue(self, value, options):
         print('remote: {}'.format(bytearray(value).decode()))
+        print('distance', distance, 'cm')
         if bytearray(value).decode() == 'Test':
             print("Realizando un Test")
-            # line_follower.setup()
-            # line_follower.setup()
             line_follower.start()
-            # os.system('picar servo-install')
         if bytearray(value).decode() == 'Line':
             print("Siguiendo la linea")
             line_follower.main()
-            # os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/line_follower.py')
         if bytearray(value).decode() == 'Light':
             print("Siguiendo la luz")
             line_follower.stop()
@@ -121,10 +128,10 @@ class RxCharacteristic(Characteristic):
             os.system('picar servo-install')
         if bytearray(value).decode() == 'l':
             print("left")
-            fw.turn(int(90+turning_angle))
+            fw.turn(int(90-turning_angle))
         if bytearray(value).decode() == 'r':
             print("right")
-            fw.turn(int(90-turning_angle))
+            fw.turn(int(90+turning_angle))
         if bytearray(value).decode() == 'bw':
             print("back wheels")
             bw.speed = 40
@@ -222,12 +229,6 @@ def straight_run():
 def setup():
     if calibrate:
         cali()
-
-
-
-
-
-
 
 
 def main():
