@@ -328,7 +328,10 @@ def mainMQTT(info):
 
 
 if __name__ == '__main__':
-    p = Process(target=mainMQTT, args=('mainMQTT',))
-    p.start()
-    p.join()
-    main()
+    p1 = Process(target=mainMQTT, args=('mainMQTT',))
+    p1.start()
+    p1.join()
+    p2 = Process(target=main, args=('main',))
+    p2.start()
+    p2.join()
+
