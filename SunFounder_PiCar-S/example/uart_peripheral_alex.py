@@ -91,6 +91,14 @@ mqttc.on_connect = on_connect
 mqttc.on_publish = on_publish
 mqttc.on_subscribe = on_subscribe
 
+# Connect
+mqttc.username_pw_set('ibnyofaw', 'UDbgKs77-wUN')
+mqttc.connect('hairdresser.cloudmqtt.com', '18849')
+
+topic = 'masteriot'
+# Start subscribe, with QoS level 0
+mqttc.subscribe(topic, 0)
+
 
 class TxCharacteristic(Characteristic):
     def __init__(self, bus, index, service):
@@ -138,15 +146,7 @@ class RxCharacteristic(Characteristic):
         distancia = str(distance)
         print("command: " + comando + " distance: " + distancia + " ")
 
-        topic = 'masteriot'
         try:
-            # Connect
-            mqttc.username_pw_set('ibnyofaw', 'UDbgKs77-wUN')
-            mqttc.connect('hairdresser.cloudmqtt.com', '18849')
-
-            # Start subscribe, with QoS level 0
-            mqttc.subscribe(topic, 0)
-
             # Publish a message
             mqttc.publish(topic, "command: " + comando + " distance: " + distancia + " ")
 
@@ -313,7 +313,7 @@ def main():
 
     try:
         mainloop.run()
-        print("asdfasdfasd")
+        mqttc.loop()
     except KeyboardInterrupt:
         adv.Release()
 
