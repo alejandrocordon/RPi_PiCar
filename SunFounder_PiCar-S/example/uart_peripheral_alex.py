@@ -313,7 +313,11 @@ def main():
 
     try:
         mainloop.run()
-        mqttc.loop()
+        # Continue the network loop, exit when an error occurs
+        rc = 0
+        while rc == 0:
+            rc = mqttc.loop()
+        print("rc: " + str(rc))
     except KeyboardInterrupt:
         adv.Release()
 
