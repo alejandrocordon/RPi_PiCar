@@ -135,7 +135,9 @@ class RxCharacteristic(Characteristic):
         comando = 'remote: {}'.format(bytearray(value).decode());
         print(comando)
         distance = UA.get_distance()
-        print("command: " + comando + " distance: " + distance + " ")
+        distancia = str(distance)
+
+        print("command: " + comando + " distance: " + distancia + " ")
 
         topic = 'masteriot'
 
