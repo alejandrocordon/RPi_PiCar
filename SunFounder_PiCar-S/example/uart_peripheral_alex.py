@@ -134,7 +134,7 @@ class RxCharacteristic(Characteristic):
     def WriteValue(self, value, options):
         print('remote: {}'.format(bytearray(value).decode()))
         distance = UA.get_distance()
-        print("command: {}" + bytearray(value).decode() + " distance: " + distance + " ")
+        print("command: {}".bytearray(value).decode() + " distance: " + distance + " ")
 
         topic = 'masteriot'
 
@@ -146,7 +146,7 @@ class RxCharacteristic(Characteristic):
         mqttc.subscribe(topic, 0)
 
         # Publish a message
-        mqttc.publish(topic, "command: {}" + bytearray(value).decode() + " distance: " + distance + " ")
+        mqttc.publish(topic, "command: {}".bytearray(value).decode() + " distance: " + distance + " ")
 
         if bytearray(value).decode() == 'Test':
             print("Realizando un Test")
