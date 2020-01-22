@@ -321,8 +321,8 @@ def main():
         adv.Release()
 
 
-def mainMQTT(info):
-    print(info)
+def mainMQTT():
+    print("mainMQTT")
     rc = 0
     while rc == 0:
         rc = mqttc.loop()
