@@ -280,10 +280,11 @@ def straight_run():
 def main():
     print('main')
     worker_1 = multiprocessing.Process(name='worker 1', target=mainPiCar)
-    worker_1.daemon = True
+    # worker_1.daemon = True
     worker_2 = multiprocessing.Process(name='worker 2', target=mainMQTT)
-    worker_2.daemon = True
+    # worker_2.daemon = True
     worker_1.start()
+    time.sleep(1)
     worker_2.start()
 
     # -------------------------------------
