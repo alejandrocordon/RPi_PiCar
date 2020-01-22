@@ -335,10 +335,16 @@ if __name__ == '__main__':
     pmqtt = threading.Thread(target=mainMQTT())
     pble = threading.Thread(target=mainBLE())
 
+    pmqtt.setDaemon(True)
+    pble.setDaemon(True)
+
     pmqtt.start()
     pble.start()
 
-    pmqtt.join()
-    pble.join()
+    # pmqtt.join()
+    # pble.join()
 
     print("Done!")
+
+    while True:
+        pass
