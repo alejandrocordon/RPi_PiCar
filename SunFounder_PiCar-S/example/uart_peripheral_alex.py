@@ -22,8 +22,7 @@ import picar
 
 import paho.mqtt.client as mqtt
 
-from multiprocessing import Process
-import multiprocessing
+from multiprocessing import Process, Manager
 
 # BLE init
 BLUEZ_SERVICE_NAME = 'org.bluez'
@@ -277,23 +276,21 @@ def straight_run():
         fw.turn_straight()
 
 
+def setup():
+    if calibrate:
+        cali()
+
+
 def main():
     print('main')
-    worker_1 = multiprocessing.Process(name='worker 1', target=mainPiCar)
-    # worker_1.daemon = True
-    worker_2 = multiprocessing.Process(name='worker 2', target=mainMQTT)
-    # worker_2.daemon = True
-    worker_1.start()
-    time.sleep(1)
-    worker_2.start()
-
-    # -------------------------------------
-    # PICAR
-    # -------------------------------------
+    p = Process(target=mainBLE())
+    p.start()
 
 
-def mainPiCar():
-    print("mainPiCar")
+
+
+def mainBLE():
+    print('mainBLE')
     global mainloop
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
     bus = dbus.SystemBus()
@@ -309,7 +306,6 @@ def mainPiCar():
                                 LE_ADVERTISING_MANAGER_IFACE)
 
     app = UartApplication(bus)
-
     adv = UartAdvertisement(bus, 0)
 
     mainloop = GObject.MainLoop()
@@ -321,25 +317,22 @@ def mainPiCar():
                                      reply_handler=register_ad_cb,
                                      error_handler=register_ad_error_cb)
 
+    # -------------------------------------
+    # PICAR
+    # -------------------------------------
+
     try:
         mainloop.run()
     except KeyboardInterrupt:
         adv.Release()
 
 
-def mainMQTT():
-    print("mainMQTT")
+def mainMQTT(info):
+    print(info)
     rc = 0
     while rc == 0:
         rc = mqttc.loop()
     print("rc: " + str(rc))
-
-
-def my_service():
-    name = multiprocessing.current_process().name
-    print(name, 'Starting')
-    time.sleep(3)
-    print(name, 'Exiting')
 
 
 if __name__ == '__main__':
