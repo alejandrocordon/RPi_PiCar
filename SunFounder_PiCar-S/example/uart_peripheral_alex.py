@@ -283,12 +283,13 @@ def setup():
 
 def main():
     print('main')
-    pble = Process(target=mainBLE())
-    pble.start()
-
     pmqtt = Process(target=mainMQTT())
     pmqtt.daemon = True
     pmqtt.start()
+
+    pble = Process(target=mainBLE())
+    pble.start()
+
 
 
 
