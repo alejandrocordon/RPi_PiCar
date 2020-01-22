@@ -276,13 +276,13 @@ def straight_run():
         fw.turn_straight()
 
 
-def setup():
-    if calibrate:
-        cali()
-
-
 def main():
     print('main')
+    worker_1 = multiprocessing.Process(name='worker 1', target=mainPiCar)
+    worker_2 = multiprocessing.Process(name='worker 2', target=mainMQTT)
+
+    worker_1.start()
+    worker_2.start()
 
     # -------------------------------------
     # PICAR
@@ -340,10 +340,4 @@ def my_service():
 
 
 if __name__ == '__main__':
-    #service = multiprocessing.Process(name='my_service', target=my_service)
-    worker_1 = multiprocessing.Process(name='worker 1', target=mainPiCar)
-    worker_2 = multiprocessing.Process(name='worker 2', target=mainMQTT)
-
-    worker_1.start()
-    worker_2.start()
-    #service.start()
+    main()
