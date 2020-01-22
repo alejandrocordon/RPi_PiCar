@@ -283,8 +283,11 @@ def setup():
 
 def main():
     print('main')
-    p = Process(target=mainBLE())
-    p.start()
+    pble = Process(target=mainBLE())
+    pble.start()
+
+    pmqtt = Process(target=mainMQTT())
+    pmqtt.start()
 
 
 
@@ -327,8 +330,8 @@ def mainBLE():
         adv.Release()
 
 
-def mainMQTT(info):
-    print(info)
+def mainMQTT():
+    print("mainMQTT")
     rc = 0
     while rc == 0:
         rc = mqttc.loop()
