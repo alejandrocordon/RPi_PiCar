@@ -22,7 +22,9 @@ import picar
 
 import paho.mqtt.client as mqtt
 
-from multiprocessing import Process
+import multiprocessing
+
+
 
 # BLE init
 BLUEZ_SERVICE_NAME = 'org.bluez'
@@ -327,11 +329,22 @@ def mainMQTT(info):
     print("rc: " + str(rc))
 
 
+def my_service():
+    name = multiprocessing.current_process().name
+    print (name, 'Starting')
+    time.sleep(3)
+    print (name, 'Exiting')
+
+
+
+
 if __name__ == '__main__':
-    p1 = Process(target=mainMQTT, args=('mainMQTT',))
-    p1.start()
-    p1.join()
-    p2 = Process(target=main, args=('main',))
-    p2.start()
-    p2.join()
+    service = multiprocessing.Process(name='my_service', target=my_service)
+    worker_1 = multiprocessing.Process(name='worker 1', target=main)
+    worker_2 = multiprocessing.Process(target=mainMQTT)
+
+    worker_1.start()
+    worker_2.start()
+    service.start()
+
 
