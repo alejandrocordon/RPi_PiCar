@@ -332,14 +332,14 @@ def mainMQTT():
 
 
 if __name__ == '__main__':
-    pmqtt = threading.Thread(target=mainMQTT())
     pble = threading.Thread(target=mainBLE())
+    pmqtt = threading.Thread(target=mainMQTT())
 
-    pmqtt.setDaemon(True)
     pble.setDaemon(True)
+    pmqtt.setDaemon(True)
 
-    pmqtt.start()
     pble.start()
+    pmqtt.start()
 
     # pmqtt.join()
     # pble.join()
