@@ -283,6 +283,14 @@ def setup():
 
 def main():
     print('main')
+
+    # -------------------------------------
+    # PICAR
+    # -------------------------------------
+
+
+def mainPiCar():
+    print("mainPiCar")
     global mainloop
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
     bus = dbus.SystemBus()
@@ -298,6 +306,7 @@ def main():
                                 LE_ADVERTISING_MANAGER_IFACE)
 
     app = UartApplication(bus)
+
     adv = UartAdvertisement(bus, 0)
 
     mainloop = GObject.MainLoop()
@@ -308,10 +317,6 @@ def main():
     ad_manager.RegisterAdvertisement(adv.get_path(), {},
                                      reply_handler=register_ad_cb,
                                      error_handler=register_ad_error_cb)
-
-    # -------------------------------------
-    # PICAR
-    # -------------------------------------
 
     try:
         mainloop.run()
@@ -335,10 +340,10 @@ def my_service():
 
 
 if __name__ == '__main__':
-    service = multiprocessing.Process(name='my_service', target=my_service)
-    worker_1 = multiprocessing.Process(name='worker 1', target=main)
+    #service = multiprocessing.Process(name='my_service', target=my_service)
+    worker_1 = multiprocessing.Process(name='worker 1', target=mainPiCar)
     worker_2 = multiprocessing.Process(name='worker 2', target=mainMQTT)
 
     worker_1.start()
     worker_2.start()
-    service.start()
+    #service.start()
