@@ -287,6 +287,7 @@ def main():
     pble.start()
 
     pmqtt = Process(target=mainMQTT())
+    pmqtt.daemon = True
     pmqtt.start()
 
 
