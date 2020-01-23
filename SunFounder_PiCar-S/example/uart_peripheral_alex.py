@@ -176,7 +176,7 @@ class RxCharacteristic(Characteristic):
         if bytearray(value).decode() == 'Stop':
             print("Realizando un Test")
             os.system('picar servo-install')
-        if bytearray(value).decode() == 'l':
+        if bytearray(value).decode().capitalize() == 'L':
             print("left")
             fw.turn(int(90 - turning_angle))
         if bytearray(value).decode() == 'r':
