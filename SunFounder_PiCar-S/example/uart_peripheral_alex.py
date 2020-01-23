@@ -66,53 +66,52 @@ UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
 
 
 # PICAR ORDERS
-def order(value,distance):
-    if value.capitalize() == 'L':
+def order(value, distance):
+    if value.upper() == 'L':
         print("left")
         fw.turn(int(90 - turning_angle))
-    if value.capitalize() == 'R':
+    if value.upper() == 'R':
         print("right")
         fw.turn(int(90 + turning_angle))
-    if value.capitalize() == 'S':
+    if value.upper() == 'S':
         print("straight")
         fw.turn(int(90))
-    if value.capitalize() == 'LINE':
+    if value.upper() == 'LINE':
         print("Line")
         line_follower.main()
-    if value.capitalize() == 'STOP':
+    if value.upper() == 'STOP':
         print("STOP")
         bw.speed = 0
         bw.forward()
-    if value.capitalize() == 'FAST':
+    if value.upper() == 'FAST':
         print("left")
         bw.speed = 90
         bw.forward()
-    if value.capitalize() == 'SLOW':
+    if value.upper() == 'SLOW':
         print("right")
         bw.speed = 20
         bw.forward()
-    if value.capitalize() == 'LIGHT':
+    if value.upper() == 'LIGHT':
         print("Siguiendo la luz")
         line_follower.stop()
         os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_follower.py')
-    if value.capitalize() == 'LIGHTULTRA':
+    if value.upper() == 'LIGHTULTRA':
         print("Siguiendo la luz")
         os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_with_obsavoidance.py')
-    if value.capitalize() == 'ULTRA':
+    if value.upper() == 'ULTRA':
         print("Esquivando objetos")
         # os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/ultra_sonic_avoid.py')
         line_follower.stop()
-    if value.capitalize() == 'STOP2':
+    if value.upper() == 'STOP2':
         print("Realizando un Test")
         os.system('picar servo-install')
-    if value.capitalize() == 'DISTANCE':
-        print("DISTANCE:"+distance)
+    if value.upper() == 'DISTANCE':
+        print("DISTANCE:" + distance)
         try:
             # Publish a message
             mqttc.publish(topic, " distancia: " + distance + " ")
         except KeyboardInterrupt:
             print("error on MQTT")
-
 
 
 # MQTT
@@ -199,7 +198,7 @@ class RxCharacteristic(Characteristic):
         distancia = str(distance)
         print("command: " + comando + " distance: " + distancia + " ")
 
-        order(comando,distance)
+        order(comando, distance)
 
         try:
             # Publish a message
