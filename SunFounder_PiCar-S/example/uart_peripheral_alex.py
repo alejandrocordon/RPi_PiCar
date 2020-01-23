@@ -69,7 +69,7 @@ UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
 def order(value):
     if "SPEED" in value.upper():
         speed = value.split(':')
-        bw.speed = speed[1]
+        bw.speed = int(speed[1])
         bw.forward()
     if value.upper() == 'L':
         print("left")
