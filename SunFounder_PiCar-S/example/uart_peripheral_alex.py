@@ -66,7 +66,7 @@ UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
 
 
 # PICAR ORDERS
-def order(value, distance):
+def order(value):
     if value.upper() == 'L':
         print("left")
         fw.turn(int(90 - turning_angle))
@@ -85,11 +85,11 @@ def order(value, distance):
         bw.forward()
     if value.upper() == 'FAST':
         print("left")
-        bw.speed = 90
+        bw.speed = 150
         bw.forward()
     if value.upper() == 'SLOW':
         print("right")
-        bw.speed = 20
+        bw.speed = 30
         bw.forward()
     if value.upper() == 'LIGHT':
         print("Siguiendo la luz")
@@ -106,10 +106,13 @@ def order(value, distance):
         print("Realizando un Test")
         os.system('picar servo-install')
     if value.upper() == 'DISTANCE':
-        print("DISTANCE:" + distance)
+        print("DISTANCE:")
         try:
             # Publish a message
-            mqttc.publish(topic, " distancia: " + distance + " ")
+            distance = UA.get_distance()
+            distancia = str(distance)
+            print("DISTANCE:"+distancia)
+            mqttc.publish(topic, " distancia: " + distancia + " ")
         except KeyboardInterrupt:
             print("error on MQTT")
 
@@ -122,7 +125,7 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, obj, msg):
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
-    order(str(msg.payload))
+    order(str(msg.payload), )
 
 
 def on_publish(client, obj, mid):
@@ -198,7 +201,7 @@ class RxCharacteristic(Characteristic):
         distancia = str(distance)
         print("command: " + comando + " distance: " + distancia + " ")
 
-        order(comando, distance)
+        order(comando)
 
         try:
             # Publish a message
