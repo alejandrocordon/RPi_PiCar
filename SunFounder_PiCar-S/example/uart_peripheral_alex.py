@@ -65,6 +65,48 @@ fw.turning_max = 45
 UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
 
 
+# PICAR ORDERS
+def order(value):
+    if value.capitalize() == 'L':
+        print("left")
+        fw.turn(int(90 - turning_angle))
+    if value.capitalize() == 'R':
+        print("right")
+        fw.turn(int(90 + turning_angle))
+    if value.capitalize() == 'S':
+        print("straight")
+        fw.turn(int(90))
+    if value.capitalize() == 'LINE':
+        print("Line")
+        line_follower.main()
+    if value.capitalize() == 'STOP':
+        print("STOP")
+        bw.speed = 0
+        bw.forward()
+    if value == 'fast':
+        print("left")
+        bw.speed = 90
+        bw.forward()
+    if value == 'slow':
+        print("right")
+        bw.speed = 10
+        bw.forward()
+    if value == 'Light':
+        print("Siguiendo la luz")
+        line_follower.stop()
+        os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_follower.py')
+    if value == 'LightUltra':
+        print("Siguiendo la luz")
+        os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_with_obsavoidance.py')
+    if value == 'Ultra':
+        print("Esquivando objetos")
+        # os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/ultra_sonic_avoid.py')
+        line_follower.stop()
+    if value == 'Stop':
+        print("Realizando un Test")
+        os.system('picar servo-install')
+
+
 # MQTT
 # Define event callbacks
 def on_connect(client, userdata, flags, rc):
@@ -73,6 +115,7 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, obj, msg):
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+    order(str(msg.payload))
 
 
 def on_publish(client, obj, mid):
@@ -143,11 +186,12 @@ class RxCharacteristic(Characteristic):
                                 ['write'], service)
 
     def WriteValue(self, value, options):
-        comando = 'remote: {}'.format(bytearray(value).decode());
-        print(comando)
+        comando = '{}'.format(bytearray(value).decode())
         distance = UA.get_distance()
         distancia = str(distance)
         print("command: " + comando + " distance: " + distancia + " ")
+
+        order(comando)
 
         try:
             # Publish a message
@@ -155,58 +199,6 @@ class RxCharacteristic(Characteristic):
 
         except KeyboardInterrupt:
             print("error on MQTT")
-
-        if bytearray(value).decode() == 'Test':
-            print("Realizando un Test")
-            line_follower.start()
-        if bytearray(value).decode() == 'Line':
-            print("Siguiendo la linea")
-            line_follower.main()
-        if bytearray(value).decode() == 'Light':
-            print("Siguiendo la luz")
-            line_follower.stop()
-            os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_follower.py')
-        if bytearray(value).decode() == 'LightUltra':
-            print("Siguiendo la luz")
-            os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_with_obsavoidance.py')
-        if bytearray(value).decode() == 'Ultra':
-            print("Esquivando objetos")
-            # os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/ultra_sonic_avoid.py')
-            line_follower.stop()
-        if bytearray(value).decode() == 'Stop':
-            print("Realizando un Test")
-            os.system('picar servo-install')
-        if bytearray(value).decode() == 'l':
-            print("left")
-            fw.turn(int(90 - turning_angle))
-        if bytearray(value).decode() == 'r':
-            print("right")
-            fw.turn(int(90 + turning_angle))
-        if bytearray(value).decode() == 'bw':
-            print("back wheels")
-            bw.speed = 40
-            bw.forward()
-        if bytearray(value).decode() == 'fw':
-            print("forward")
-            os.system('picar servo-install')
-        if bytearray(value).decode() == 'fast':
-            print("left")
-            bw.speed = 90
-            bw.forward()
-        if bytearray(value).decode() == 'slow':
-            print("right")
-            bw.speed = 10
-            bw.forward()
-        if bytearray(value).decode() == 'stop':
-            print("stop")
-            bw.speed = 0
-            bw.forward()
-        if bytearray(value).decode() == 's':
-            print("straight")
-            fw.turn(int(90))
-        if bytearray(value).decode() == 'init':
-            print("forward")
-            os.system('picar servo-install')
 
 
 class UartService(Service):
@@ -325,7 +317,6 @@ def mainBLE():
         mainloop.run()
     except KeyboardInterrupt:
         adv.Release()
-
 
 
 def mainMQTT():
