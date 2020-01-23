@@ -176,7 +176,7 @@ class RxCharacteristic(Characteristic):
         if bytearray(value).decode() == 'Stop':
             print("Realizando un Test")
             os.system('picar servo-install')
-        if bytearray(value).decode().capitalize() == 'L':
+        if bytearray(value).decode() == 'l':
             print("left")
             fw.turn(int(90 - turning_angle))
         if bytearray(value).decode() == 'r':
@@ -313,13 +313,6 @@ def mainBLE():
                                      reply_handler=register_ad_cb,
                                      error_handler=register_ad_error_cb)
 
-    pmqtt = threading.Thread(target=mainMQTT)
-
-    pmqtt.setDaemon(True)
-
-    pmqtt.start()
-
-
     # -------------------------------------
     # PICAR
     # -------------------------------------
@@ -339,4 +332,19 @@ def mainMQTT():
 
 
 if __name__ == '__main__':
-    mainBLE()
+    pble = threading.Thread(target=mainBLE)
+    pmqtt = threading.Thread(target=mainMQTT)
+
+    pmqtt.setDaemon(True)
+    pble.setDaemon(True)
+
+    pmqtt.start()
+    pble.start()
+
+    # pmqtt.join()
+    # pble.join()
+
+    print("Done!")
+
+    while True:
+        pass
