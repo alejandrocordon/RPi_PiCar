@@ -66,7 +66,7 @@ UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
 
 
 # PICAR ORDERS
-def order(value):
+def order(value,distance):
     if value.capitalize() == 'L':
         print("left")
         fw.turn(int(90 - turning_angle))
@@ -83,28 +83,36 @@ def order(value):
         print("STOP")
         bw.speed = 0
         bw.forward()
-    if value == 'fast':
+    if value.capitalize() == 'FAST':
         print("left")
         bw.speed = 90
         bw.forward()
-    if value == 'slow':
+    if value.capitalize() == 'SLOW':
         print("right")
-        bw.speed = 10
+        bw.speed = 20
         bw.forward()
-    if value == 'Light':
+    if value.capitalize() == 'LIGHT':
         print("Siguiendo la luz")
         line_follower.stop()
         os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_follower.py')
-    if value == 'LightUltra':
+    if value.capitalize() == 'LIGHTULTRA':
         print("Siguiendo la luz")
         os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/light_with_obsavoidance.py')
-    if value == 'Ultra':
+    if value.capitalize() == 'ULTRA':
         print("Esquivando objetos")
         # os.system('python /home/pi/Desktop/RPi_PiCar/SunFounder_PiCar-S/example/ultra_sonic_avoid.py')
         line_follower.stop()
-    if value == 'Stop':
+    if value.capitalize() == 'STOP2':
         print("Realizando un Test")
         os.system('picar servo-install')
+    if value.capitalize() == 'DISTANCE':
+        print("DISTANCE:"+distance)
+        try:
+            # Publish a message
+            mqttc.publish(topic, " distancia: " + distance + " ")
+        except KeyboardInterrupt:
+            print("error on MQTT")
+
 
 
 # MQTT
@@ -191,12 +199,11 @@ class RxCharacteristic(Characteristic):
         distancia = str(distance)
         print("command: " + comando + " distance: " + distancia + " ")
 
-        order(comando)
+        order(comando,distance)
 
         try:
             # Publish a message
             mqttc.publish(topic, "command: " + comando + " distance: " + distancia + " ")
-
         except KeyboardInterrupt:
             print("error on MQTT")
 
