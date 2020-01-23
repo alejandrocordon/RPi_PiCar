@@ -318,33 +318,24 @@ def mainBLE():
     # -------------------------------------
 
     try:
+        pmqtt = threading.Thread(target=mainMQTT)
+        pmqtt.setDaemon(True)
+        pmqtt.start()
+
         mainloop.run()
     except KeyboardInterrupt:
         adv.Release()
+
 
 
 def mainMQTT():
     print("mainMQTT")
     rc = 0
     while rc == 0:
+        time.sleep(1)
         rc = mqttc.loop()
     print("rc: " + str(rc))
 
 
 if __name__ == '__main__':
-    pble = threading.Thread(target=mainBLE)
-    pmqtt = threading.Thread(target=mainMQTT)
-
-    pmqtt.setDaemon(True)
-    pble.setDaemon(True)
-
-    pmqtt.start()
-    pble.start()
-
-    # pmqtt.join()
-    # pble.join()
-
-    print("Done!")
-
-    while True:
-        pass
+    mainBLE()
