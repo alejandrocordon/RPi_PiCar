@@ -108,6 +108,7 @@ mqttc.subscribe(topic, 0)
 
 def mainBLE():
     while True:
+        time.sleep(1)
         print('A\n')
 
 
@@ -118,7 +119,7 @@ def mainMQTT():
 
 
 if __name__ == "__main__":
-    t1 = Thread(target=mainBLE)
+    t1 = Thread(target=)
     t2 = Thread(target=mainMQTT)
 
     t1.setDaemon(True)

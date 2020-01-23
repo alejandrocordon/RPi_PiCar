@@ -313,6 +313,13 @@ def mainBLE():
                                      reply_handler=register_ad_cb,
                                      error_handler=register_ad_error_cb)
 
+    pmqtt = threading.Thread(target=mainMQTT())
+
+    pmqtt.setDaemon(True)
+
+    pmqtt.start()
+
+
     # -------------------------------------
     # PICAR
     # -------------------------------------
@@ -332,19 +339,4 @@ def mainMQTT():
 
 
 if __name__ == '__main__':
-    pble = threading.Thread(target=mainBLE())
-    pmqtt = threading.Thread(target=mainMQTT())
-
-    pble.setDaemon(True)
-    pmqtt.setDaemon(True)
-
-    pble.start()
-    pmqtt.start()
-
-    # pmqtt.join()
-    # pble.join()
-
-    print("Done!")
-
-    while True:
-        pass
+    mainBLE()
