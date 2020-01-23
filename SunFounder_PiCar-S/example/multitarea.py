@@ -119,7 +119,7 @@ def mainMQTT():
 
 
 if __name__ == "__main__":
-    t1 = Thread(target=)
+    t1 = Thread(target=mainBLE)
     t2 = Thread(target=mainMQTT)
 
     t1.setDaemon(True)

@@ -313,7 +313,7 @@ def mainBLE():
                                      reply_handler=register_ad_cb,
                                      error_handler=register_ad_error_cb)
 
-    pmqtt = threading.Thread(target=mainMQTT())
+    pmqtt = threading.Thread(target=mainMQTT)
 
     pmqtt.setDaemon(True)
 
