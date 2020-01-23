@@ -67,6 +67,10 @@ UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
 
 # PICAR ORDERS
 def order(value):
+    if "SPEED" in value.upper():
+        speed = value.split(':')
+        bw.speed = speed[1]
+        bw.forward()
     if value.upper() == 'L':
         print("left")
         fw.turn(int(90 - turning_angle))
@@ -84,12 +88,12 @@ def order(value):
         bw.speed = 0
         bw.forward()
     if value.upper() == 'FAST':
-        print("left")
-        bw.speed = 150
+        print("FAST")
+        bw.speed = 100
         bw.forward()
     if value.upper() == 'SLOW':
         print("right")
-        bw.speed = 30
+        bw.speed = 40
         bw.forward()
     if value.upper() == 'LIGHT':
         print("Siguiendo la luz")
