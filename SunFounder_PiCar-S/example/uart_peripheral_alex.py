@@ -13,12 +13,12 @@ from gi.repository import GObject
 
 import line_follower
 
-from SunFounder_Line_Follower import Line_Follower
-from SunFounder_Ultrasonic_Avoidance import Ultrasonic_Avoidance
-from picar import front_wheels
-from picar import back_wheels
+#from SunFounder_Line_Follower import Line_Follower
+#from SunFounder_Ultrasonic_Avoidance import Ultrasonic_Avoidance
+#from picar import front_wheels
+#from picar import back_wheels
 import time
-import picar
+#import picar
 
 import paho.mqtt.client as mqtt
 
