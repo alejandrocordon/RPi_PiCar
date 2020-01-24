@@ -51,14 +51,14 @@ max_off_track_count = 40
 
 delay = 0.0005
 
-#fw = front_wheels.Front_Wheels(db='config')
-#bw = back_wheels.Back_Wheels(db='config')
+##fw = front_wheels.Front_Wheels(db='config')
+##bw = back_wheels.Back_Wheels(db='config')
 #lf = Line_Follower.Line_Follower()
 
 #lf.references = REFERENCES
-#fw.ready()
-#bw.ready()
-#fw.turning_max = 45
+##fw.ready()
+##bw.ready()
+##fw.turning_max = 45
 
 # Picar Ultrasonic init
 #UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
@@ -68,32 +68,32 @@ delay = 0.0005
 def order(value):
     if "SPEED" in value.upper():
         speed = value.split(':')
-        bw.speed = int(speed[1])
-        bw.forward()
+        #bw.speed = int(speed[1])
+        #bw.forward()
     if value.upper() == 'L':
         print("left")
-        fw.turn(int(90 - turning_angle))
+        #fw.turn(int(90 - turning_angle))
     if value.upper() == 'R':
         print("right")
-        fw.turn(int(90 + turning_angle))
+        #fw.turn(int(90 + turning_angle))
     if value.upper() == 'S':
         print("straight")
-        fw.turn(int(90))
+        #fw.turn(int(90))
     if value.upper() == 'LINE':
         print("Line")
         line_follower.main()
     if value.upper() == 'STOP':
         print("STOP")
-        bw.speed = 0
-        bw.forward()
+        #bw.speed = 0
+        #bw.forward()
     if value.upper() == 'FAST':
         print("FAST")
-        bw.speed = 100
-        bw.forward()
+        #bw.speed = 100
+        #bw.forward()
     if value.upper() == 'SLOW':
         print("right")
-        bw.speed = 40
-        bw.forward()
+        #bw.speed = 40
+        #bw.forward()
     if value.upper() == 'LIGHT':
         print("Siguiendo la luz")
         line_follower.stop()
@@ -112,7 +112,7 @@ def order(value):
         print("DISTANCE:")
         try:
             # Publish a message
-            distance = UA.get_distance()
+            distance = 0 #UA.get_distance()
             distancia = str(distance)
             print("DISTANCE:"+distancia)
             mqttc.publish(topic, " distancia: " + distancia + " ")
@@ -274,16 +274,6 @@ def find_adapter(bus):
 # PICAR
 # -------------------------------------
 
-def straight_run():
-    while True:
-        bw.speed = 70
-        bw.forward()
-        fw.turn_straight()
-
-
-def setup():
-    if calibrate:
-        cali()
 
 
 def main():
