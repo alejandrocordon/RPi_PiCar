@@ -22,8 +22,7 @@ import time
 
 import paho.mqtt.client as mqtt
 
-import threading
-
+print("INIT0")
 # BLE init
 BLUEZ_SERVICE_NAME = 'org.bluez'
 DBUS_OM_IFACE = 'org.freedesktop.DBus.ObjectManager'
@@ -37,7 +36,7 @@ LOCAL_NAME = 'RaspberryPi3_UART'
 mainloop = None
 
 # PICAR
-print("INIT")
+print("INIT1")
 #picar.setup()
 
 REFERENCES = [200, 200, 200, 200, 200]
