@@ -129,7 +129,7 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, obj, msg):
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
-    order(str(msg.payload), )
+    #order(str(msg.payload), )
 
 
 def on_publish(client, obj, mid):
@@ -201,11 +201,12 @@ class RxCharacteristic(Characteristic):
 
     def WriteValue(self, value, options):
         comando = '{}'.format(bytearray(value).decode())
-        distance = UA.get_distance()
+        #distance = UA.get_distance()
+        distance = 0
         distancia = str(distance)
         print("command: " + comando + " distance: " + distancia + " ")
 
-        order(comando)
+        #order(comando)
 
         try:
             # Publish a message
@@ -303,8 +304,9 @@ def mainBLE():
     service_manager = dbus.Interface(
         bus.get_object(BLUEZ_SERVICE_NAME, adapter),
         GATT_MANAGER_IFACE)
-    ad_manager = dbus.Interface(bus.get_object(BLUEZ_SERVICE_NAME, adapter),
-                                LE_ADVERTISING_MANAGER_IFACE)
+    ad_manager = dbus.Interface(
+        bus.get_object(BLUEZ_SERVICE_NAME, adapter),
+        LE_ADVERTISING_MANAGER_IFACE)
 
     app = UartApplication(bus)
     adv = UartAdvertisement(bus, 0)
