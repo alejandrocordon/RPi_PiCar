@@ -38,7 +38,7 @@ mainloop = None
 
 # PICAR
 print("INIT")
-picar.setup()
+#picar.setup()
 
 REFERENCES = [200, 200, 200, 200, 200]
 # calibrate = True
@@ -52,17 +52,17 @@ max_off_track_count = 40
 
 delay = 0.0005
 
-fw = front_wheels.Front_Wheels(db='config')
-bw = back_wheels.Back_Wheels(db='config')
-lf = Line_Follower.Line_Follower()
+#fw = front_wheels.Front_Wheels(db='config')
+#bw = back_wheels.Back_Wheels(db='config')
+#lf = Line_Follower.Line_Follower()
 
-lf.references = REFERENCES
-fw.ready()
-bw.ready()
-fw.turning_max = 45
+#lf.references = REFERENCES
+#fw.ready()
+#bw.ready()
+#fw.turning_max = 45
 
 # Picar Ultrasonic init
-UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
+#UA = Ultrasonic_Avoidance.Ultrasonic_Avoidance(20)
 
 
 # PICAR ORDERS
